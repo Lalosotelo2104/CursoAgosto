@@ -19,7 +19,7 @@
 						"referenceName": "Nuevo",
 						"type": "DatasetReference",
 						"parameters": {
-							"sistemadearchivos": "almeduardosegunds",
+							"sistemadearchivos": "nuevo",
 							"rutadearchivo": "nuevo"
 						}
 					},
@@ -100,7 +100,7 @@
 									"referenceName": "Nuevo",
 									"type": "DatasetReference",
 									"parameters": {
-										"sistemadearchivos": "almeduardosegunds",
+										"sistemadearchivos": "nuevo",
 										"rutadearchivo": "nuevo"
 									}
 								}
