@@ -23,7 +23,9 @@
 							"Direccion": "nuevo"
 						}
 					},
-					"fieldList": [],
+					"fieldList": [
+						"childItems"
+					],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
 						"recursive": true,
