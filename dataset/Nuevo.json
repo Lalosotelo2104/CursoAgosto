@@ -1,0 +1,34 @@
+{
+	"name": "Nuevo",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeStorage1",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"sistemadearchivos": {
+				"type": "string"
+			},
+			"rutadearchivo": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().rutadearchivo",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().sistemadearchivos",
+					"type": "Expression"
+				}
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
