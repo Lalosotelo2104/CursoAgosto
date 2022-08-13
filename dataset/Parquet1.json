@@ -21,8 +21,18 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobFSLocation",
-				"fileName": "Address.parquet",
-				"fileSystem": "nuevo"
+				"fileName": {
+					"value": "@dataset().nombre",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().direccion",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().sistemadearchivos",
+					"type": "Expression"
+				}
 			},
 			"compressionCodec": "snappy"
 		},
