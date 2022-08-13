@@ -26,6 +26,7 @@
 					"fieldList": [],
 					"storeSettings": {
 						"type": "AzureBlobFSReadSettings",
+						"recursive": true,
 						"enablePartitionDiscovery": false
 					}
 				}
@@ -120,11 +121,6 @@
 				}
 			}
 		],
-		"parameters": {
-			"esquemadeconsulta": {
-				"type": "string"
-			}
-		},
 		"annotations": []
 	}
 }
