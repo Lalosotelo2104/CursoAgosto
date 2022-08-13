@@ -3,8 +3,8 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Copy data1",
-				"type": "Copy",
+				"name": "Get Metadata1",
+				"type": "GetMetadata",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "7.00:00:00",
@@ -15,69 +15,108 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "ParquetSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						}
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": false,
-						"tableOption": "autoCreate",
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
+					"dataset": {
 						"referenceName": "Address",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"Sistemadearchivos": "almeduardosegunds",
+							"Direccion": "nuevo"
+						}
+					},
+					"fieldList": [],
+					"storeSettings": {
+						"type": "AzureBlobFSReadSettings",
+						"enablePartitionDiscovery": false
 					}
-				],
-				"outputs": [
-					{
-						"referenceName": "SqlCopia1",
-						"type": "DatasetReference"
-					}
-				]
+				}
 			},
 			{
-				"name": "Lookup1",
-				"type": "Lookup",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "7.00:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Metadata1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "ParquetSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						}
+					"items": {
+						"value": "@activity('Get Metadata1').output.childItems",
+						"type": "Expression"
 					},
-					"dataset": {
-						"referenceName": "Parquet1",
-						"type": "DatasetReference"
-					}
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "ParquetSource",
+									"storeSettings": {
+										"type": "AzureBlobFSReadSettings",
+										"recursive": true,
+										"wildcardFolderPath": "nuevo",
+										"wildcardFileName": {
+											"value": "@item()['name']",
+											"type": "Expression"
+										},
+										"enablePartitionDiscovery": false
+									}
+								},
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false,
+									"tableOption": "autoCreate",
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "Address",
+									"type": "DatasetReference",
+									"parameters": {
+										"Sistemadearchivos": "almeduardosegunds",
+										"Direccion": "nuevo"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "SqlCopia1",
+									"type": "DatasetReference",
+									"parameters": {
+										"Tabla": {
+											"value": "@concat(replace(item()['name'],'.parquet',''),'NuevaTabla')",
+											"type": "Expression"
+										},
+										"Esquema": "SalesLT"
+									}
+								}
+							]
+						}
+					]
 				}
 			}
 		],
